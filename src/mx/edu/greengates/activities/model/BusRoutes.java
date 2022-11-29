@@ -1,4 +1,4 @@
-package mx.edu.greengates.activities.control;
+package mx.edu.greengates.activities.model;
 
 public class BusRoutes {
     /**

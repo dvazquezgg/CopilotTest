@@ -1,6 +1,6 @@
-package mx.edu.greengates.activities.control;
+package mx.edu.greengates.activities.model;
 
-public class Activities {
+public class Activity {
     /**
      * A POJO class that represents an activity.
      * it includes the activity's name, date, time, location, description and the number of students
@@ -24,11 +24,12 @@ public class Activities {
     private String description;
     private int max_number_of_students;
     private int min_number_of_students;
+    private int number_of_students;
 
     private String[] teachers;
 
 
-    public Activities(String code,String activity_name, String day, String section, String location, int gender_type, String description, int number_of_students) {
+    public Activity(String code, String activity_name, String day, String section, String location, int gender_type, String description, int number_of_students) {
         this.code = code;
         this.activity_name = activity_name;
         this.day = day;
@@ -53,6 +54,17 @@ public class Activities {
         return day;
     }
 
+    public String getSection() {
+        return section;
+    }
+
+    public int getGender_type() {
+        return gender_type;
+    }
+
+    public String[] getTeachers() {
+        return teachers;
+    }
 
     public String getLocation() {
         return location;
