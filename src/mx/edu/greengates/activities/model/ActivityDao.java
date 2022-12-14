@@ -1,9 +1,20 @@
 package mx.edu.greengates.activities.model;
 
+import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 
 public class ActivityDao implements Dao<Activity> {
+    /**
+     * A DAO class that implements the methods defined in the DAO interface
+     */
+
+    Connection con;
+
+    ActivityDao(Connection con) {
+        this.con = con;
+    }
+
     /**
      * A DAO class that implements the methods defined in the DAO interface
      */

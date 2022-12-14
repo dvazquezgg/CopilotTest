@@ -10,7 +10,8 @@ public class Main {
 
         System.out.println("Hello world!");
 
-        DbConnection db = new DbConnection();
+        DbConnection db = DbConnection.getInstance();
+
         List<Activity> activities = db.selectActivities();
 
         for (Activity activity : activities) {

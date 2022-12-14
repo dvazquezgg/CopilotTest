@@ -1,8 +1,14 @@
 package mx.edu.greengates.activities.view;
 
+import mx.edu.greengates.activities.model.Dao;
+import mx.edu.greengates.activities.model.TextList;
+import mx.edu.greengates.activities.model.TextListDao;
+import mx.edu.greengates.activities.util.DbConnection;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 
 public class ActivityEntry {
     private JButton submitButton;
@@ -68,7 +74,17 @@ public class ActivityEntry {
         cancelButton = new JButton("Cancel");
         cbDayOfWeek = getComboBox(new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"});
         cbDayOfWeek.setSelectedIndex(0);
-        cbSection = getComboBox(new String[]{"F1-F3", "F4-F5", "L6-U6", "Primary", "Secondary"});
+
+        DbConnection dbConnection = DbConnection.getInstance();
+        Connection conn = dbConnection.getConnection();
+        TextListDao textListDao = new TextListDao(conn);
+        String[] years = textListDao.getAll("YEARS").stream().map(TextList::getText).toArray(String[]::new);
+        String[] sections = textListDao.getAll("SECTIONS").stream().map(TextList::getText).toArray(String[]::new);
+        dbConnection.closeConnection();
+
+        cbYears = getComboBox(years);
+        cbYears.setSelectedIndex(0);
+        cbSection = getComboBox(sections);
         cbSection.setSelectedIndex(0);
     }
 }

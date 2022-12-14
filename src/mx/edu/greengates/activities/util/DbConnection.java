@@ -16,18 +16,31 @@ public class DbConnection {
 
     Connection con = null;
 
-    public static Connection connect() {
-        // SQLite connection string
-        String url = "jdbc:sqlite:AfternoonActivities.db";
-        Connection conn = null;
+
+    DbConnection() {
         try {
-            conn = DriverManager.getConnection(url);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            Class.forName("org.sqlite.JDBC");
+            con = DriverManager.getConnection("jdbc:sqlite:AfternoonActivities.db");
+        } catch (Exception e) {
+            System.out.println(e);
         }
-        return conn;
     }
 
+    public Connection getConnection() {
+        return con;
+    }
+
+    public static DbConnection getInstance() {
+        return new DbConnection();
+    }
+
+    public void closeConnection() {
+        try {
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * select all rows in the a table
@@ -53,7 +66,7 @@ public class DbConnection {
 
         ArrayList<Activity> activities = new ArrayList<Activity>();
 
-        try (Connection conn = this.connect();
+        try (Connection conn = getConnection();
              Statement stmt  = conn.createStatement();
              ResultSet rs    = stmt.executeQuery(sql)){
 
@@ -74,6 +87,8 @@ public class DbConnection {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            closeConnection();
         }
         return activities;
     }
@@ -86,7 +101,7 @@ public class DbConnection {
                 "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         int records = 0;
-        try (Connection conn = this.connect();
+        try (Connection conn = getConnection();
              PreparedStatement pstmt  = conn.prepareStatement(sqlInsert)) {
             pstmt.setString(1, activity.getCode());
             pstmt.setString(2, activity.getDay());
@@ -108,6 +123,8 @@ public class DbConnection {
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            closeConnection();
         }
 
         return records;
@@ -119,7 +136,7 @@ public class DbConnection {
     public void selectAll(){
         String sql = "SELECT id, StudentIDNumber, StudentsName FROM Students";
 
-        try (Connection conn = this.connect();
+        try (Connection conn = getConnection();
              Statement stmt  = conn.createStatement();
              ResultSet rs    = stmt.executeQuery(sql)){
 
@@ -131,6 +148,8 @@ public class DbConnection {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            closeConnection();
         }
     }
 

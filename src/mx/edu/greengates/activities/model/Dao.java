@@ -1,5 +1,6 @@
 package mx.edu.greengates.activities.model;
 
+import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 
