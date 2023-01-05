@@ -4,6 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class BusRoutesDao implements Dao<BusRoutes>{
+    @Override
+    public String[] getColumNames() {
+        return new String[0];
+    }
+
     /**
      * A DAO class that implements the methods defined in the DAO interface
      */
@@ -25,6 +30,11 @@ public class BusRoutesDao implements Dao<BusRoutes>{
     @Override
     public List<BusRoutes> getAll() {
         return null;
+    }
+
+    @Override
+    public Object[][] getAllObjects() {
+        return new Object[0][];
     }
 
     @Override

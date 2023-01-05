@@ -15,6 +15,11 @@ public class ActivityDao implements Dao<Activity> {
         this.con = con;
     }
 
+    @Override
+    public String[] getColumNames() {
+        return new String[0];
+    }
+
     /**
      * A DAO class that implements the methods defined in the DAO interface
      */
@@ -36,6 +41,11 @@ public class ActivityDao implements Dao<Activity> {
     @Override
     public List<Activity> getAll() {
         return null;
+    }
+
+    @Override
+    public Object[][] getAllObjects() {
+        return new Object[0][];
     }
 
     @Override

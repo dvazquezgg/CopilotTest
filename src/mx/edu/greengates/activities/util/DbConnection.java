@@ -17,7 +17,7 @@ public class DbConnection {
     Connection con = null;
 
 
-    DbConnection() {
+    public DbConnection() {
         try {
             Class.forName("org.sqlite.JDBC");
             con = DriverManager.getConnection("jdbc:sqlite:AfternoonActivities.db");

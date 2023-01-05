@@ -1,6 +1,6 @@
 import mx.edu.greengates.activities.model.Activity;
 import mx.edu.greengates.activities.util.DbConnection;
-import mx.edu.greengates.activities.view.ActivityEntry;
+import mx.edu.greengates.activities.view.*;
 
 import javax.swing.*;
 import java.util.List;
@@ -8,19 +8,22 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        System.out.println("Hello world!");
+        System.out.println("-- Main function --");
 
         DbConnection db = DbConnection.getInstance();
 
-        List<Activity> activities = db.selectActivities();
+        // List<Activity> activities = db.selectActivities();
 
-        for (Activity activity : activities) {
-            System.out.println(activity.getActivity_name());
-        }
+        //for (Activity activity : activities) {
+        //    System.out.println(activity.getActivity_name());
+        // }
 
         //Activity activity =activities.get(0);
         //db.insertActivity(activity);
-        displayActivityForm();
+        //displayActivityForm();
+        //displayTableForm(new TeacherEntry(), "Teachers");
+        displayTableForm(new SectionEntry(), "Sections");
+        //displayTableForm(new YearTypeEntry(), "Years");
 
     }
 
@@ -33,6 +36,20 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-
     }
+
+    public static void displayTableForm(TableEntry entry, String title){
+        System.out.println("Displaying teacher table form");
+        JFrame frame = new JFrame(title);
+        TableEntry table = entry;
+        JPanel panel = table.getPanel();
+        frame.setContentPane(panel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+
+
+
 }

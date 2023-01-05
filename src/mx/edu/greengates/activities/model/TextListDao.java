@@ -23,6 +23,11 @@ public class TextListDao implements Dao<TextList>{
     }
 
     @Override
+    public String[] getColumNames() {
+        return new String[0];
+    }
+
+    @Override
     public void save(TextList list) {
         System.out.println("Saving activity: " + list);
     }
@@ -40,6 +45,11 @@ public class TextListDao implements Dao<TextList>{
     @Override
     public List<TextList> getAll() {
         return null;
+    }
+
+    @Override
+    public Object[][] getAllObjects() {
+        return new Object[0][];
     }
 
     public List<TextList> getAll(String type) {
