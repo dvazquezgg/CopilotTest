@@ -18,22 +18,21 @@ public class TeacherDao implements Dao<Teacher> {
 
     public TeacherDao() {    }
 
-    private Connection getConnection() {
+
+    protected Connection getConnection() {
         DbConnection db = DbConnection.getInstance();
         Connection conn = db.getConnection();
         return conn;
     }
 
-    private void closeConnection() {
+
+    protected void closeConnection() {
         DbConnection db = DbConnection.getInstance();
         db.closeConnection();
     }
 
-    @Override
-    public void save(Teacher teacher) {
+    private void executeDBTransaction(String sql) {
         Connection conn = getConnection();
-        System.out.println("Saving teacher: " + teacher);
-        String sql = "INSERT INTO Teacher (name) VALUES ('" + teacher.getName() + "')";
         try (Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
         } catch (SQLException e) {
@@ -41,34 +40,26 @@ public class TeacherDao implements Dao<Teacher> {
         } finally {
             closeConnection();
         }
+    }
+    @Override
+    public void save(Teacher teacher) {
+        System.out.println("Saving teacher: " + teacher);
+        String sql = "INSERT INTO Teacher (name) VALUES ('" + teacher.getName() + "')";
+        executeDBTransaction(sql);
     }
 
     @Override
     public void update(Teacher teacher) {
-        Connection conn = getConnection();
         System.out.println("Updating teacher: " + teacher);
         String sql = "UPDATE Teacher SET name = '" + teacher.getName() + "' WHERE id = " + teacher.getId();
-        try (Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            closeConnection();
-        }
+        executeDBTransaction(sql);
     }
 
     @Override
     public void delete(Teacher teacher) {
-        Connection conn = getConnection();
         System.out.println("Deleting teacher: " + teacher);
         String sql = "DELETE FROM Teacher WHERE id = " + teacher.getId();
-        try (Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            closeConnection();
-        }
+        executeDBTransaction(sql);
     }
 
     @Override

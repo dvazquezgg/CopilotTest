@@ -50,13 +50,9 @@ public class YearTypeTableModel implements TableModel {
     @Override
     public void setValueAt(Object value, int row, int col) {
         data[row][col] = value;
-
-        DbConnection dbConnection = DbConnection.getInstance();
-        Connection conn = dbConnection.getConnection();
-        YearTypeDao dao = new YearTypeDao(conn);
+        YearTypeDao dao = new YearTypeDao();
         YearType years = new YearType((int) data[row][0], (String) data[row][1]);
         dao.update(years);
-        dbConnection.closeConnection();
     }
 
     @Override

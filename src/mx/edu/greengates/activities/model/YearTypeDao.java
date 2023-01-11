@@ -1,5 +1,7 @@
 package mx.edu.greengates.activities.model;
 
+import mx.edu.greengates.activities.util.DbConnection;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,43 +17,53 @@ public class YearTypeDao implements Dao<YearType> {
      *
      */
 
-    Connection conn;
 
-    public YearTypeDao(Connection conn) {
-        this.conn = conn;
+    protected Connection getConnection() {
+        DbConnection db = DbConnection.getInstance();
+        Connection conn = db.getConnection();
+        return conn;
+    }
+
+    protected void closeConnection() {
+        DbConnection db = DbConnection.getInstance();
+        db.closeConnection();
+    }
+
+
+    public YearTypeDao() {
+
+    }
+
+    private void executeDBTransaction(String sql) {
+        Connection conn = getConnection();
+        try (Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            closeConnection();
+        }
     }
 
     @Override
     public void save(YearType yearType) {
         System.out.println("Saving year: " + yearType);
         String sql = "INSERT INTO Years (year) VALUES ('" + yearType.getYear() + "')";
-        try (Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        executeDBTransaction(sql);
     }
 
     @Override
     public void update(YearType yearType) {
         System.out.println("Updating year: " + yearType);
         String sql = "UPDATE Years SET year = '" + yearType.getYear() + "' WHERE id_year = " + yearType.getId();
-        try (Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        executeDBTransaction(sql);
     }
 
     @Override
     public void delete(YearType yearType) {
         System.out.println("Deleting year: " + yearType);
         String sql = "DELETE FROM Years WHERE id_year = " + yearType.getId();
-        try (Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        executeDBTransaction(sql);
     }
 
     @Override
@@ -59,7 +71,7 @@ public class YearTypeDao implements Dao<YearType> {
         List<YearType> years = new ArrayList<YearType>();
 
         String sql = "SELECT id_year as id, year FROM Years";
-
+        Connection conn = getConnection();
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
@@ -68,6 +80,8 @@ public class YearTypeDao implements Dao<YearType> {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            closeConnection();
         }
         return years;
     }
@@ -80,6 +94,7 @@ public class YearTypeDao implements Dao<YearType> {
     @Override
     public Optional<YearType> get(int id) {
         String sql = "SELECT id_year as id, year as years FROM Years WHERE id_year = " + id;
+        Connection conn = getConnection();
         try (Statement stmt  = conn.createStatement();
              ResultSet rs    = stmt.executeQuery(sql)){
 
@@ -91,6 +106,8 @@ public class YearTypeDao implements Dao<YearType> {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            closeConnection();
         }
         return Optional.empty();
     }

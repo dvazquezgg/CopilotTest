@@ -1,5 +1,7 @@
 package mx.edu.greengates.activities.model;
 
+import mx.edu.greengates.activities.util.DbConnection;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,43 +15,49 @@ public class SectionDao implements Dao<Section> {
      * it includes the section's name and the number of activities
      *
      */
-    Connection conn;
 
-    public SectionDao(Connection conn) {
-        this.conn = conn;
+    protected Connection getConnection() {
+        DbConnection db = DbConnection.getInstance();
+        Connection conn = db.getConnection();
+        return conn;
     }
+
+    protected void closeConnection() {
+        DbConnection db = DbConnection.getInstance();
+        db.closeConnection();
+    }
+
+    private void executeDBTransaction(String sql) {
+        Connection conn = getConnection();
+        try (Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            closeConnection();
+        }
+    }
+    public SectionDao() {    }
 
     @Override
     public void save(Section section) {
         System.out.println("Saving section: " + section);
         String sql = "INSERT INTO Section (section_name) VALUES ('" + section.getName() + "')";
-        try (Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        executeDBTransaction(sql);
     }
 
     @Override
     public void update(Section section) {
         System.out.println("Updating section: " + section);
         String sql = "UPDATE Section SET section_name = '" + section.getName() + "' WHERE section_id = " + section.getId();
-        try (Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        executeDBTransaction(sql);
     }
 
     @Override
     public void delete(Section section) {
         System.out.println("Deleting section: " + section);
         String sql = "DELETE FROM Section WHERE section_id = " + section.getId();
-        try (Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        executeDBTransaction(sql);
     }
 
     @Override
@@ -57,7 +65,7 @@ public class SectionDao implements Dao<Section> {
         List<Section> sections = new ArrayList<Section>();
 
         String sql = "SELECT section_id as id, section_name as section FROM Section";
-
+        Connection conn = getConnection();
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
@@ -66,6 +74,8 @@ public class SectionDao implements Dao<Section> {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            closeConnection();
         }
         return sections;
     }
@@ -79,6 +89,7 @@ public class SectionDao implements Dao<Section> {
     @Override
     public Optional<Section> get(int id) {
         String sql = "SELECT section_id as id, section_name as section FROM Section WHERE section_id = " + id;
+        Connection conn = getConnection();
         try (Statement stmt  = conn.createStatement();
              ResultSet rs    = stmt.executeQuery(sql)){
 
@@ -90,6 +101,8 @@ public class SectionDao implements Dao<Section> {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            closeConnection();
         }
         return Optional.empty();
     }

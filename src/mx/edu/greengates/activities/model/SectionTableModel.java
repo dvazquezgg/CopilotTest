@@ -48,12 +48,9 @@ public class SectionTableModel implements TableModel {
     public void setValueAt(Object value, int row, int col) {
         data[row][col] = value;
 
-        DbConnection dbConnection = DbConnection.getInstance();
-        Connection conn = dbConnection.getConnection();
-        SectionDao dao = new SectionDao(conn);
+        SectionDao dao = new SectionDao();
         Section section = new Section((int) data[row][0], (String) data[row][1]);
         dao.update(section);
-        dbConnection.closeConnection();
     }
 
     @Override
