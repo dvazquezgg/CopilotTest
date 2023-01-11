@@ -47,12 +47,9 @@ public class TeacherTableModel implements TableModel {
     public void setValueAt(Object value, int row, int col) {
         data[row][col] = value;
 
-        DbConnection dbConnection = DbConnection.getInstance();
-        Connection conn = dbConnection.getConnection();
-        TeacherDao dao = new TeacherDao(conn);
+        TeacherDao dao = new TeacherDao();
         Teacher teacher = new Teacher((int) data[row][0], (String) data[row][1]);
         dao.update(teacher);
-        dbConnection.closeConnection();
     }
 
     @Override
