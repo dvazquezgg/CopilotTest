@@ -22,8 +22,8 @@ public class Main {
         //db.insertActivity(activity);
         //displayActivityForm();
         //displayTableForm(new TeacherEntry(), "Teachers");
-        displayTableForm(new SectionEntry(), "Sections");
-        //displayTableForm(new YearTypeEntry(), "Years");
+        //displayTableForm(new SectionEntry(), "Sections");
+        displayTableForm(new YearTypeEntry(), "Years");
 
     }
 
