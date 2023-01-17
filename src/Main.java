@@ -23,8 +23,17 @@ public class Main {
         //displayActivityForm();
         //displayTableForm(new TeacherEntry(), "Teachers");
         //displayTableForm(new SectionEntry(), "Sections");
-        displayTableForm(new YearTypeEntry(), "Years");
+        //displayTableForm(new YearTypeEntry(), "Years");
+        displayBusOptionsForm();
 
+    }
+
+    private static void displayBusOptionsForm() {
+        JFrame frame = new JFrame("Bus Options");
+        frame.setContentPane(new BusOptionEntry().getPanel());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 
     public static void displayActivityForm(){
