@@ -8,28 +8,36 @@ public class BusStop {
      */
 
     private int id;
-    private String name;
+    private String optionCode;
+    private String stopCode;
+    private String arrival;
+    private String stop;
 
-    private int number_of_activities;
-
-    public BusStop(int id, String name) {
+    public BusStop(int id, String optionCode, String stopCode, String arrival, String stop) {
         this.id = id;
-        this.name = name;
+        this.optionCode = optionCode;
+        this.stopCode = stopCode;
+        this.arrival = arrival;
+        this.stop = stop;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getOptionCode() {
+        return optionCode;
     }
 
-    public void setNumberOfActivities(int number_of_activities) {
-        this.number_of_activities = number_of_activities;
+    public String getStopCode() {
+        return stopCode;
     }
 
-    public int getNumber_of_activities() {
-        return number_of_activities;
+    public String getArrival() {
+        return arrival;
+    }
+
+    public String getStop() {
+        return stop;
     }
 }

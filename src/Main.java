@@ -1,4 +1,5 @@
 import mx.edu.greengates.activities.model.Activity;
+import mx.edu.greengates.activities.model.BusStop;
 import mx.edu.greengates.activities.util.DbConnection;
 import mx.edu.greengates.activities.view.*;
 
@@ -24,7 +25,8 @@ public class Main {
         //displayTableForm(new TeacherEntry(), "Teachers");
         //displayTableForm(new SectionEntry(), "Sections");
         //displayTableForm(new YearTypeEntry(), "Years");
-        displayBusOptionsForm();
+        //displayBusOptionsForm();
+        displayBusStopForm();
 
     }
 
@@ -36,6 +38,13 @@ public class Main {
         frame.setVisible(true);
     }
 
+    private static void displayBusStopForm() {
+        JFrame frame = new JFrame("Bus Stops");
+        frame.setContentPane(new BusStopEntry().getPanel());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
     public static void displayActivityForm(){
         System.out.println("Displaying activity form");
         JFrame frame = new JFrame("Input New Activity Information");
